@@ -11,6 +11,7 @@
   let score1 = 0;
 
   let playersChosen = false;
+
   let player1 = false;
   let player2 = false;
 
@@ -26,6 +27,7 @@
   });
 
 const choosePlayerNo = (no) => {
+  console.log("clicked itttt:", no)
   
   // if(youArePlayer !== 0){
   //   return
@@ -44,6 +46,7 @@ const choosePlayerNo = (no) => {
     view.setUint8(1, 2, true);
   }  
     ws.send(buffer);
+    console.log(buffer)
 }
 
 
@@ -59,8 +62,6 @@ if(event.data[0]==2){
   }
 }
 };
-
-$: console.log("you are now playerNo:", youArePlayer)
 
 onDestroy(()=>{
   ws.close()
