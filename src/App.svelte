@@ -27,6 +27,7 @@
   });
 
 const choosePlayerNo = (no) => {
+  console.log("clicked itttt:", no)
   
   // if(youArePlayer !== 0){
   //   return
@@ -45,6 +46,7 @@ const choosePlayerNo = (no) => {
     view.setUint8(1, 2, true);
   }  
     ws.send(buffer);
+    console.log(buffer)
 }
 
 

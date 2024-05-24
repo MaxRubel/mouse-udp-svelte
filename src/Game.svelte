@@ -3,8 +3,8 @@
 
 import { onDestroy, onMount } from "svelte";
 import Circle from "./Circle.svelte";
-import Cursor1 from "./Cursor1.svelte";
-import ChoosePlayer from "./ChoosePlayer.svelte";
+import Cursor2 from "./Cursor2.svelte";
+  import Cursor1 from "./Cursor1.svelte";
 
 export let youArePlayer;
 
@@ -26,17 +26,29 @@ let oldX = 0
 let oldY = 0
 
 const ws = new WebSocket("ws://localhost:8080/ws");
-const playerNo = 2;
 
 onMount(() => {
     ws.onopen = () => {
     console.log("Connected to server");
     };
     
-    document.addEventListener("mousemove", (e) => {
-    x = e.x;
-    y = e.y;
-    });
+    let throttleTimer;
+
+const handleMouseMove = (e) => {
+  x = e.x;
+  y = e.y;
+};
+
+const throttledMouseMove = (e) => {
+  if (!throttleTimer) {
+    handleMouseMove(e);
+    throttleTimer = setTimeout(() => {
+      throttleTimer = undefined;
+    }, 30);
+  }
+};
+
+document.addEventListener("mousemove", throttledMouseMove);
 });
 
 const archiveMousePos = (x, y) => {
@@ -46,49 +58,50 @@ const archiveMousePos = (x, y) => {
 
 const sendMousePos = () => {
 
-if (oldX === x && oldY === y){
-    return
-}
+  if (oldX === x && oldY === y){
+      return
+  }
 
-let buffer = new ArrayBuffer(6);
-let view = new DataView(buffer);
+  let buffer = new ArrayBuffer(6);
+  let view = new DataView(buffer);
 
-view.setUint8(0, 0, true);
-view.setUint16(1, x, true);
-view.setUint16(3, y, true);
-view.setUint8(5, youArePlayer, true); 
+  view.setUint8(0, 0, true);
+  view.setUint16(1, x, true);
+  view.setUint16(3, y, true);
+  view.setUint8(5, youArePlayer, true); 
 
-ws.send(buffer);
+  ws.send(buffer);
 
-archiveMousePos(x, y)
+  archiveMousePos(x, y)
 };
 
 let intervalId;
 let gameRun = false;
 
 const citcleMoves = () => {
-if(gameRun){
-    size = 0
-    cx = Math.floor(Math.random() * 1020) + 1;
-    cy = Math.floor(Math.random() * 800) + 1;
-    intervalId = setInterval(() => {
-    if (size < 300){
-        size +=1    
-    }
-}, 200)
-} else {
-    clearInterval(intervalId)
-}
+  if(gameRun){
+      size = 0
+      cx = Math.floor(Math.random() * 1020) + 1;
+      cy = Math.floor(Math.random() * 800) + 1;
+      intervalId = setInterval(() => {
+      if (size < 300){
+          size +=1    
+      }
+  }, 200)
+  } else {
+      clearInterval(intervalId)
+  }
 }
 
 const buttonClick = () => {
-gameRun = !gameRun
 
-if(!gameRun){
-    clearInterval(intervalId);
-} else {
-    citcleMoves();
-}
+  gameRun = !gameRun
+
+  if(!gameRun){
+      clearInterval(intervalId);
+  } else {
+      citcleMoves();
+  }
 }
 
 const handleClick = () => {
@@ -126,6 +139,7 @@ if (event.data[0]=== "m"){
     p1y = p1;
     p2x = p2;
     p2y = p3;
+    console.log(event.data)
 }
 };
 
@@ -153,7 +167,8 @@ if (event.data[0]=== "m"){
       </div> -->
       <div>
         <Circle {handleClick}{cx}{cy}{size} display={gameRun ? 'block' : 'none'}/>
-        <Cursor1 {p2x}{p2y}/>
+        <Cursor1 {p1x}{p1y}/>
+        <Cursor2 {p2x}{p2y}/>
       </div>
     </h1>
   </main>
