@@ -7,7 +7,6 @@ import Cursor1 from "./Cursor1.svelte";
 import ChoosePlayer from "./ChoosePlayer.svelte";
 
 export let youArePlayer;
-$: console.log(youArePlayer)
 
 let cx = 0;
 let cy = 0;
@@ -23,6 +22,9 @@ let p2y = 0;
 let scoreO = 0;
 let score1 = 0
 
+let oldX = 0
+let oldY = 0
+
 const ws = new WebSocket("ws://localhost:8080/ws");
 const playerNo = 2;
 
@@ -37,7 +39,16 @@ onMount(() => {
     });
 });
 
+const archiveMousePos = (x, y) => {
+    oldX = x
+    oldY = y
+}
+
 const sendMousePos = () => {
+
+if (oldX === x && oldY === y){
+    return
+}
 
 let buffer = new ArrayBuffer(6);
 let view = new DataView(buffer);
@@ -45,9 +56,11 @@ let view = new DataView(buffer);
 view.setUint8(0, 0, true);
 view.setUint16(1, x, true);
 view.setUint16(3, y, true);
-view.setUint8(5, 2, true); 
+view.setUint8(5, youArePlayer, true); 
 
 ws.send(buffer);
+
+archiveMousePos(x, y)
 };
 
 let intervalId;
@@ -56,11 +69,13 @@ let gameRun = false;
 const citcleMoves = () => {
 if(gameRun){
     size = 0
-    cx = Math.floor(Math.random() * 500) + 1;
-    cy = Math.floor(Math.random() * 400) + 1;
+    cx = Math.floor(Math.random() * 1020) + 1;
+    cy = Math.floor(Math.random() * 800) + 1;
     intervalId = setInterval(() => {
-    size +=1
-}, 30)
+    if (size < 300){
+        size +=1    
+    }
+}, 200)
 } else {
     clearInterval(intervalId)
 }
@@ -87,13 +102,9 @@ view.setUint8(1, youArePlayer, true)
 ws.send(buffer);
 }
 
-const choosePlayerNo = (no) => {
-console.log('choose player')
-}
-
 let interval;
 
-interval = setInterval(sendMousePos, 1);
+interval = setInterval(sendMousePos, 50);
 
 onDestroy(() => {
 ws.close();

@@ -11,6 +11,7 @@
   let score1 = 0;
 
   let playersChosen = false;
+
   let player1 = false;
   let player2 = false;
 
@@ -59,8 +60,6 @@ if(event.data[0]==2){
   }
 }
 };
-
-$: console.log("you are now playerNo:", youArePlayer)
 
 onDestroy(()=>{
   ws.close()

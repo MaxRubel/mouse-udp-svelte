@@ -7,8 +7,8 @@
     </script>
     
     <main>
-        <button class="circle" style="height: {size}px; width: {size}px; left:{cx}px; top: {cy}px; display: {display};" on:click={handleClick}>
-        </button>
+        <div class="circle" style="height: {size}px; width: {size}px; left:{cx}px; top: {cy}px; display: {display};" on:click={handleClick}>
+        </div>
     </main>
     
     <style>
@@ -19,6 +19,10 @@
             height: 150px;
             width: 150px;
             border-radius: 100%;
+            border: none;
             background-color: aquamarine;
+        }
+        .circle::selection{
+            border: none;
         }
     </style>
