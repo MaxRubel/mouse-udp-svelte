@@ -29,6 +29,6 @@
   }
 
   .cursor-icon {
-    transform: translateY(-25px) rotate(-72deg);
+    transform: rotate(-72deg);
   }
 </style>

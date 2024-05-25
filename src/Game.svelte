@@ -86,7 +86,7 @@
       cx = x1;
       cy = y1;
       intervalId = setInterval(() => {
-        if (size < 100) {
+        if (size < 800) {
           size += 1;
         }
       }, 40);
@@ -114,7 +114,6 @@
   };
 
   let interval;
-
   interval = setInterval(sendMousePos, 50);
 
   onDestroy(() => {
@@ -163,9 +162,9 @@
       {/if}
     </button>
     <button on:click={handleClick}> test click </button> -->
-    <h1>
-      <div>Player 1 Score:{scoreO}</div>
-      <div>Player 2 Score:{score1}</div>
+    <h4>
+      <div>Player 1 Score: {scoreO}</div>
+      <div>Player 2 Score: {score1}</div>
       <div>You are player: {youArePlayer}</div>
       <!-- <div>
         X: {x}
@@ -187,7 +186,7 @@
           <Cursor2 {p2x} {p2y} />
         {/if}
       </div>
-    </h1>
+    </h4>
   {/if}
 </main>
 
