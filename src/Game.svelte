@@ -89,7 +89,7 @@
         if (size < 100) {
           size += 1;
         }
-      }, 100);
+      }, 40);
     }
   };
 
@@ -155,14 +155,14 @@
   {#if countdown}
     <Countdown {startGame} />
   {:else}
-    <button on:click={buttonClick}>
+    <!-- <button on:click={buttonClick}>
       {#if gameRun}
         STOP
       {:else}
         START
       {/if}
     </button>
-    <button on:click={handleClick}> test click </button>
+    <button on:click={handleClick}> test click </button> -->
     <h1>
       <div>Player 1 Score:{scoreO}</div>
       <div>Player 2 Score:{score1}</div>
@@ -181,8 +181,11 @@
           {size}
           display={gameRun ? "block" : "none"}
         />
-        <Cursor1 {p1x} {p1y} />
-        <Cursor2 {p2x} {p2y} />
+        {#if youArePlayer !== 1}
+          <Cursor1 {p1x} {p1y} />
+        {:else}
+          <Cursor2 {p2x} {p2y} />
+        {/if}
       </div>
     </h1>
   {/if}

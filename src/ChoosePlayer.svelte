@@ -1,4 +1,7 @@
 <script>
+  import Cursor1 from "./Cursor1.svelte";
+  import Cursor2 from "./Cursor2.svelte";
+
   export let choosePlayerNo;
   export let player1;
   export let player2;

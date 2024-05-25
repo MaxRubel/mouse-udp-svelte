@@ -24,13 +24,11 @@
   .cursor {
     height: 8px;
     width: 8px;
-    border-radius: 100%;
-    background-color: blue;
     position: absolute;
     pointer-events: none;
   }
 
   .cursor-icon {
-    transform: rotate(-72deg);
+    transform: translateY(-25px) rotate(-72deg);
   }
 </style>
